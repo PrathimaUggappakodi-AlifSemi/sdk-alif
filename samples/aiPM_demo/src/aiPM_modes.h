@@ -1,0 +1,14 @@
+int app_set_go3_params(void);
+int app_set_go1_params(void);
+int app_set_go4_params(void);
+int app_set_ready2_params(void);
+int app_set_stop1_params(void);
+int app_set_stop2_params(void);
+int app_set_stop3_params(void);
+int app_set_stop4_params(void);
+int app_set_stop5_params(void);
+int app_set_standby_params(void);
+int app_set_ready1_systop_on_params(void);
+int app_set_ready1_systop_off_params(void);
+void app_pm_lock_deeper_states(bool lock);
+void app_pm_unlock_deeper_states(uint32_t period_ms);
