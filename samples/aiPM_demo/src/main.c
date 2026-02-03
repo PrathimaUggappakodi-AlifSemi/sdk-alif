@@ -19,15 +19,14 @@
 #include <zephyr/drivers/counter.h>
 #include <zephyr/drivers/uart.h>
 #include <zephyr/pm/pm.h>
+#include <zephyr/pm/policy.h>
 #include <zephyr/sys/poweroff.h>
 #include <cmsis_core.h>
 #include <soc.h>
 #include <se_service.h>
 #include <es0_power_manager.h>
 
-#include <power_mgr.h>
-
-
+#include <zephyr/kernel.h>
 
 /*
  * CRITICAL: Must run at PRE_KERNEL_1 to restore SYSTOP before peripherals initialize.
@@ -35,8 +34,17 @@
  * On cold boot: SYSTOP is already ON by default, safe to call.
  * On SOFT_OFF wakeup: SYSTOP is OFF, must restore BEFORE peripherals access registers.
  */
-//SYS_INIT(app_set_run_params, PRE_KERNEL_1, 46);
 
+
+static int app_pre_kernel_init(void)
+{
+
+	pm_policy_state_lock_get(PM_STATE_SOFT_OFF, PM_ALL_SUBSTATES);
+	pm_policy_state_lock_get(PM_STATE_SUSPEND_TO_RAM, PM_ALL_SUBSTATES);
+
+	return 0;
+}
+SYS_INIT(app_pre_kernel_init, PRE_KERNEL_1, 39);
 
 /* Macros */
 LOG_MODULE_REGISTER(main, LOG_LEVEL_DBG);
@@ -44,16 +52,8 @@ LOG_MODULE_REGISTER(main, LOG_LEVEL_DBG);
 
 int main(void)
 {
-	if (power_mgr_cold_boot()) {
-		printk("PM_SHELL test app boot\n");
-	}
-	#if 0
-	#if defined(CONFIG_START_WITH_DIVIDED_HFRC)
-	app_set_standby_params();
-	app_pm_lock_deeper_states(true);
-	app_pm_unlock_deeper_states(1000);
-	#endif
-	#endif
+	printk("PM_SHELL test app boot\n");
+
 
 	while (1) {
 		/*  Sleep Long period */
