@@ -28,13 +28,6 @@
 
 #include <zephyr/kernel.h>
 
-/*
- * CRITICAL: Must run at PRE_KERNEL_1 to restore SYSTOP before peripherals initialize.
- *
- * On cold boot: SYSTOP is already ON by default, safe to call.
- * On SOFT_OFF wakeup: SYSTOP is OFF, must restore BEFORE peripherals access registers.
- */
-
 
 static int app_pre_kernel_init(void)
 {
@@ -53,7 +46,6 @@ LOG_MODULE_REGISTER(main, LOG_LEVEL_DBG);
 int main(void)
 {
 	printk("PM_SHELL test app boot\n");
-
 
 	while (1) {
 		/*  Sleep Long period */
