@@ -1,3 +1,18 @@
+typedef enum _POWER_MODE_TYPE {
+    GOMODE1=1,
+    GOMODE3,
+    GOMODE4,
+    READYMODE1_WITH_SYSTOP,
+    READYMODE1_WITHOUT_SYSTOP,
+    READY2,
+    STANDBYMODE,
+    STOPMODE1,
+    STOPMODE2,
+    STOPMODE3,
+    STOPMODE4,
+    STOPMODE5
+}POWER_MODE_TYPE;
+
 int app_set_go3_params(void);
 int app_set_go1_params(void);
 int app_set_go4_params(void);
