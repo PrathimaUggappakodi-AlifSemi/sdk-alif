@@ -49,6 +49,7 @@
 	status = "okay";
 };
 
+
 / {
 aliases {
     uart2 = &uart2;
