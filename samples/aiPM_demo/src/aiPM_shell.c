@@ -27,42 +27,6 @@
 LOG_MODULE_REGISTER(LOG_MODULE_NAME);
 
 
-#define BK_RAM_BASE 0x4902C000U
-#define BK_RAM_SIZE 1000U
-#define POWER_MODE_OFFSET 0
-#define HP_START_OFFSET 1
-
-uint32_t power_mode_input=0;
-uint32_t hp_start_flag=0;
-
-static int32_t bk_ram_wr(uint32_t *data, uint32_t offset)
-{
-    if (offset < BK_RAM_SIZE) {
-        sys_write32(*data, BK_RAM_BASE + (offset * sizeof(uint32_t)));
-        return 0;
-    }
-    return -1;
-}
-
-static void backup_ram_write(uint32_t power_mode)
-{
-     while(1)
-     {
-          if( (bk_ram_wr(&power_mode,POWER_MODE_OFFSET)!= -1))
-          {
-             break;
-          }
-     }
-
-     while(1)
-     {
-          hp_start_flag=1;
-          if((bk_ram_wr(&hp_start_flag,HP_START_OFFSET))!= -1)
-          break;
-     }
-     
-}
-
 #if defined(CONFIG_PM)
 
 
