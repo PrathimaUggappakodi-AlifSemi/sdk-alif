@@ -27,7 +27,15 @@
 #include <es0_power_manager.h>
 
 #include <zephyr/kernel.h>
+#include <zephyr/drivers/gpio.h>
 
+/* 1000 msec = 1 sec */
+#define SLEEP_TIME_MS   100
+
+/* The devicetree node identifier for the "led0" alias. */
+#define LED0_NODE DT_ALIAS(led0)
+
+static const struct gpio_dt_spec led = GPIO_DT_SPEC_GET(LED0_NODE, gpios);
 
 static int app_pre_kernel_init(void)
 {
@@ -39,12 +47,66 @@ static int app_pre_kernel_init(void)
 }
 SYS_INIT(app_pre_kernel_init, PRE_KERNEL_1, 39);
 
+#if defined(CONFIG_GPIO)
+
+int app_set_hfrc_params(void)
+{
+	run_profile_t runp;
+	int ret;
+
+	runp.power_domains = PD_SSE700_AON_MASK ;
+	runp.dcdc_voltage  = 775;
+	runp.dcdc_mode     = DCDC_MODE_PFM_FORCED;
+	runp.aon_clk_src   = CLK_SRC_LFXO;
+	runp.run_clk_src   = CLK_SRC_HFRC;
+	runp.scaled_clk_freq = SCALED_FREQ_RC_ACTIVE_0_6_MHZ;
+	runp.vdd_ioflex_3V3 = IOFLEX_LEVEL_1V8;
+	runp.ip_clock_gating = 0;
+	runp.phy_pwr_gating = 0;
+	runp.cpu_clk_freq  = CLOCK_FREQUENCY_76_8_RC_MHZ;
+	runp.memory_blocks =  SERAM_MASK;
+
+	ret = se_service_set_run_cfg(&runp);
+	__ASSERT(ret == 0, "SE: set_run_cfg failed = %d", ret);
+	
+
+	return ret;
+}
+SYS_INIT(app_set_hfrc_params, PRE_KERNEL_1, 46);
+#endif
+
 /* Macros */
 LOG_MODULE_REGISTER(main, LOG_LEVEL_DBG);
 
 
 int main(void)
 {
+	#if defined (CONFIG_GPIO)
+	
+	int ret;
+	bool led_state = true;
+
+	if (!gpio_is_ready_dt(&led)) {
+		return 0;
+	}
+
+	ret = gpio_pin_configure_dt(&led, GPIO_OUTPUT_ACTIVE);
+	if (ret < 0) {
+		return 0;
+	}
+
+	while (1) {
+		ret = gpio_pin_toggle_dt(&led);
+		if (ret < 0) {
+			return 0;
+		}
+
+		led_state = !led_state;
+		printf("LED state: %s\n", led_state ? "ON" : "OFF");
+		k_msleep(SLEEP_TIME_MS);
+	}
+	
+	#else
 	printk("PM_SHELL test app boot\n");
 
 	while (1) {
@@ -52,5 +114,6 @@ int main(void)
 		k_sleep(K_MSEC(1000000));
 
 	}
+	#endif
 	return 0;
 }
