@@ -4,3 +4,21 @@
  */
 
 #include "alif_b1_pm.dtsi"
+
+
+/ {
+     aliases {
+             led0 = &myled0;
+     };
+
+     leds {
+             compatible = "gpio-leds";
+             myled0: led_0 {
+                     gpios = <&gpio4 3 GPIO_ACTIVE_LOW>;
+             };
+     };
+};
+
+&gpio4 {
+    status = "okay";
+};
