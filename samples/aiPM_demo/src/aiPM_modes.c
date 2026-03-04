@@ -26,6 +26,7 @@
 #include <zephyr/logging/log.h>
 LOG_MODULE_REGISTER(pm_system_off, LOG_LEVEL_INF);
 
+#if 0
 #if DT_NODE_HAS_COMPAT_STATUS(DT_NODELABEL(rtc0), snps_dw_apb_rtc, okay)
 	#define WAKEUP_SOURCE DT_NODELABEL(rtc0)
 	#define SE_OFFP_EWIC_CFG EWIC_RTC_A
@@ -36,6 +37,7 @@ LOG_MODULE_REGISTER(pm_system_off, LOG_LEVEL_INF);
 	#define SE_OFFP_WAKEUP_EVENTS WE_LPTIMER0
 #else
 #error "Wakeup Device not enabled in the dts"
+#endif
 #endif
 /**
  * As per the application requirements, it can remove the memory blocks which are not in use.
@@ -87,8 +89,6 @@ LOG_MODULE_REGISTER(pm_system_off, LOG_LEVEL_INF);
 
  #include <zephyr/pm/pm.h>
 
-
-
  
  /*
  * This function will be invoked in the PRE_KERNEL_2 phase of the init routine.
@@ -99,8 +99,8 @@ LOG_MODULE_REGISTER(pm_system_off, LOG_LEVEL_INF);
         int ret;
         uint32_t regdata;
         
-        offp.ewic_cfg = SE_OFFP_EWIC_CFG;
-	offp.wakeup_events = SE_OFFP_WAKEUP_EVENTS;
+        offp.ewic_cfg = 0;// SE_OFFP_EWIC_CFG;
+	offp.wakeup_events = 0;//SE_OFFP_WAKEUP_EVENTS;
 	offp.vtor_address = SCB->VTOR;
 	offp.vtor_address_ns = SCB->VTOR;
 	offp.stby_clk_src      = CLK_SRC_HFRC;
@@ -157,7 +157,7 @@ int app_set_go1_params(void)
 	return ret;
 }
 
-
+//SYS_INIT(app_set_go1_params, PRE_KERNEL_1, 46);
 
 void app_pm_lock_deeper_states(bool lock)
 {
@@ -224,6 +224,7 @@ int app_set_standby_params(void)
 	
 }
 
+#if 0
 #if defined(CONFIG_START_WITH_DIVIDED_HFRC)
 
 /**
@@ -258,7 +259,7 @@ static int app_set_run_params(void)
 SYS_INIT(app_set_run_params, PRE_KERNEL_1, 46);
 
 #endif
-
+#endif
 
 #if defined(CONFIG_START_WITH_HFRC)
 
@@ -327,7 +328,7 @@ int app_set_go4_params(void)
 
 	return ret;
 }
-SYS_INIT(app_set_go4_params, PRE_KERNEL_1, 46);
+//SYS_INIT(app_set_go4_params, PRE_KERNEL_1, 46);
 
 int app_set_ready2_params(void)
 {
@@ -365,8 +366,6 @@ int app_set_ready2_params(void)
         
 	pm_policy_state_lock_put(PM_STATE_RUNTIME_IDLE, PM_ALL_SUBSTATES);
 	k_sleep(K_USEC(19000000));
-
-
 
 	return ret;
 }
