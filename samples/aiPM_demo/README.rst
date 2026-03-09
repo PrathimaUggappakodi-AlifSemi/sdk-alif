@@ -169,6 +169,10 @@ If running only on HE:
 
 CONFIG_RTSS_HE=y
 
+If running only on HP:
+
+CONFIG_RTSS_HP=y
+
 For enabling pm_stop modes 1 to 4, set :
 
 1) #define SOFT_OFF_SUPPORTED to 1 in aiPM_modes.c
@@ -189,24 +193,24 @@ For enabling pm_stop mode 5, set
 2) Set the following node status as okay in alif_pm.dtsi file
 
 .. code-block:: console
+
    &subsys_off {
-	min-residency-us = <25000000>;
-
-	exit-latency-us = <3000>;
-
-	status = "okay";
+       min-residency-us = <25000000>;
+       exit-latency-us = <3000>;
+       status = "okay";
    };
 
-For pm_standby mode, set 
+For pm_standby mode, set
 
-1) #define S2RAM_SUPPORTED to 1 in aiPM_modes.c 
+1) #define S2RAM_SUPPORTED to 1 in aiPM_modes.c
 
 .. code-block:: console
-    &standby_s2ram {
-	min-residency-us = <19000000>;
-	exit-latency-us = <3000>;
-	status = "okay";
-    };
+
+   &standby_s2ram {
+       min-residency-us = <19000000>;
+       exit-latency-us = <3000>;
+       status = "okay";
+   };
 
 The below durations are set in code
 * **Sleep Durations**:
@@ -234,7 +238,7 @@ Currently our Zephyr infrastructure does not support dynamic frequency scaling, 
    Ensure SYS_INIT(app_set_ready2_params, PRE_KERNEL_1, 46); is enabled in the code
    
    Build and execute the binary, measure the power
-   
+
 
 Executing the application
 *************************
@@ -256,3 +260,19 @@ pwr pm_ready1_with_off_systop
 Refer to the snapshot below:
 
 .. figure:: ./Media/Ready1uart.png
+
+
+Boot Zephyr to lowest power
+***************************
+
+To demonstrate the lowest power with which Zephyr executes, an application has been integrated with this sample. Using HFRC based profile in SYS_INIT and a lowest scaled clk frequency, a LED is toggled after Zephyr is booted with the lowest power achievable.
+
+To execute this application, do the following:
+
+- In the prj.conf, enable CONFIG_GPIO=y.
+- If running on HE, enable CONFIG_RTSS_HE =y.
+
+Currently the scaled clk freq is set to SCALED_FREQ_RC_ACTIVE_0_6_MHZ. This can be changed for SCALED_FREQ_RC_ACTIVE_76_8_MHZ to SCALED_FREQ_RC_ACTIVE_0_6_MHZ based on the application needs. As the scaled clk freq is increased, the power consumption is also observed to increase.
+
+Build the sample as above using the build commands for the respective family of chip. The configured LED in the overlay board should start toggling. 
+Measure the power accordingly.
