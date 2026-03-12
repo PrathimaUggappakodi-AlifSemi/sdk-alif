@@ -6,7 +6,7 @@ Alif aiPM Power Modes Demo
 Purpose
 ********
 
-This sample demonstrates exercising certain power profiles and measure the power numbers. This application has a Shell CLI. It allows the following commands(power modes) from Shell CLI. All the commands that are available are for PLL based profiles.
+This sample demonstrates exercising certain power profiles and measure the power numbers. This application has a Shell CLI that works on LPUART for. It allows the following commands(power modes) from Shell CLI. All the commands that are available are for PLL based profiles.
  
  pm_go1
 
@@ -188,7 +188,8 @@ For enabling pm_stop modes 1 to 4, set :
 
 For enabling pm_stop mode 5, set
 
-1) #define SOFT_OFF_SUPPORTED to 1 in aiPM_modes.c
+1) #define SOFT_OFF_SUPPORTED to 1 and #define S2RAM_SUPPORTED to 1 in aiPM_modes.c.
+Both locks need to be released to allow Zephyr to go into deeper sleep states and Zephyr framework can choose the SOFT_OFF state based on the inputs.
 
 2) Set the following node status as okay in alif_pm.dtsi file
 
