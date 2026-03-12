@@ -74,6 +74,8 @@ static bool balletto_vbat_resume_enabled(void)
 #define EARLY_BOOT_CONSOLE_INIT 1
 #elif DT_SAME_NODE(DT_NODELABEL(uart1), DT_CHOSEN(zephyr_console))
 #define CONSOLE_UART_NUM 1
+#elif DT_SAME_NODE(DT_NODELABEL(lpuart), DT_CHOSEN(zephyr_console))
+#define CONSOLE_UART_NUM 3
 #define EARLY_BOOT_CONSOLE_INIT 1
 #else
 #error "Specify the uart console number"
