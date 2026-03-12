@@ -22,7 +22,12 @@
 };
 
 &uart2 {
-	//clock-frequency = < 38400000 >;
+	status = "disabled";
+	
+};
+
+
+&lpuart {
 	status = "okay";
 };
 
@@ -30,13 +35,13 @@
 &subsys_off {
 	min-residency-us = <25000000>;
 	exit-latency-us = <3000>;
-	status = "disabled";
+	status = "okay";
 };
 
 &standby_s2ram {
 	min-residency-us = <19000000>;
 	exit-latency-us = <3000>;
-	status = "okay";
+	status = "disabled";
 };
 
 &stop_s2ram {
@@ -60,6 +65,10 @@ aliases {
 / {
 	chosen {
 		zephyr,cortex-m-idle-timer = &rtc0;
+		zephyr,console = &lpuart;
+	        zephyr,shell-uart = &lpuart;
+	        //zephyr,console = &uart2;
+	        //zephyr,shell-uart = &uart2;
 	};
 	/*power-states {
 		off: off {
@@ -67,5 +76,6 @@ aliases {
 			//min-residency-us = < 4000 >;
 		//};*/
 	//};
-	zephyr,console = &uart2;
+	//zephyr,console = &uart2;
+
 };
