@@ -17,6 +17,7 @@
 #endif
 #include <es0_power_manager.h>
 #include "se_service.h"
+#include "debug_pwr.h"
 #include <stdlib.h>
 #include <inttypes.h>
 
@@ -36,6 +37,7 @@ static int cmd_standby_test(const struct shell *shell, size_t argc, char **argv)
 	
         int ret = app_set_standby_params();
         app_pm_lock_deeper_states(true);
+		debug_pwr_print();
         shell_fprintf(shell, SHELL_VT100_COLOR_DEFAULT, "Standby state set \n");
 
 	if (ret) {
@@ -43,6 +45,7 @@ static int cmd_standby_test(const struct shell *shell, size_t argc, char **argv)
 		return ret;
 	}
 
+	
 	return ret;
 }
 
@@ -53,15 +56,17 @@ static int cmd_ready1_systop_test(const struct shell *shell, size_t argc, char *
 	
         int ret = app_set_ready1_systop_on_params();
         app_pm_lock_deeper_states(true);
+		debug_pwr_print();
          k_sleep(K_MSEC(1000));
-	pm_policy_state_lock_put(PM_STATE_RUNTIME_IDLE, PM_ALL_SUBSTATES);
-	k_sleep(K_FOREVER);
+	    pm_policy_state_lock_put(PM_STATE_RUNTIME_IDLE, PM_ALL_SUBSTATES);
+	    k_sleep(K_FOREVER);
 
 	if (ret) {
 		shell_fprintf(shell, SHELL_VT100_COLOR_DEFAULT, "ERROR: %d\n", ret);
 		return ret;
 	}
 
+	//debug_pwr_print();
 	return ret;
 }
 
@@ -73,6 +78,7 @@ static int cmd_ready1_systop_off_test(const struct shell *shell, size_t argc, ch
 	
         int ret = app_set_ready1_systop_off_params();
         app_pm_lock_deeper_states(true);
+		debug_pwr_print();
          k_sleep(K_MSEC(1000));
 	pm_policy_state_lock_put(PM_STATE_RUNTIME_IDLE, PM_ALL_SUBSTATES);
 	k_sleep(K_FOREVER);
@@ -82,6 +88,7 @@ static int cmd_ready1_systop_off_test(const struct shell *shell, size_t argc, ch
 		return ret;
 	}
 
+	//debug_pwr_print();
 	return ret;
 }
 
@@ -98,6 +105,7 @@ static int cmd_go1_test(const struct shell *shell, size_t argc, char **argv)
 		return ret;
 	}
 
+	debug_pwr_print();
 	return ret;
 }
 
@@ -113,6 +121,7 @@ static int cmd_go3_test(const struct shell *shell, size_t argc, char **argv)
 		return ret;
 	}
 
+	debug_pwr_print();
 	return ret;
 }
 
@@ -128,6 +137,7 @@ static int cmd_go4_test(const struct shell *shell, size_t argc, char **argv)
 		return ret;
 	}
 
+	debug_pwr_print();
 	return ret;
 }
 
@@ -147,6 +157,7 @@ static int cmd_ready2_test(const struct shell *shell, size_t argc, char **argv)
 		return ret;
 	}
 
+	debug_pwr_print();
 	return ret;
 }
 static int cmd_stop1_test(const struct shell *shell, size_t argc, char **argv)
@@ -155,6 +166,7 @@ static int cmd_stop1_test(const struct shell *shell, size_t argc, char **argv)
 	shell_fprintf(shell, SHELL_VT100_COLOR_DEFAULT, "Start STOP 1 mode \n");
         int ret = app_set_stop1_params();
         app_pm_lock_deeper_states(false);
+		debug_pwr_print();
         k_sleep(K_USEC(22000000));
 
 	if (ret) {
@@ -162,6 +174,7 @@ static int cmd_stop1_test(const struct shell *shell, size_t argc, char **argv)
 		return ret;
 	}
 
+	//debug_pwr_print();
 	return ret;
 }
 
@@ -172,6 +185,7 @@ static int cmd_stop2_test(const struct shell *shell, size_t argc, char **argv)
 	
         int ret = app_set_stop2_params();
         app_pm_lock_deeper_states(false);
+		debug_pwr_print();
         k_sleep(K_USEC(22000000));
 
 	if (ret) {
@@ -179,6 +193,7 @@ static int cmd_stop2_test(const struct shell *shell, size_t argc, char **argv)
 		return ret;
 	}
 
+	//debug_pwr_print();
 	return ret;
 }
 
@@ -189,6 +204,7 @@ static int cmd_stop3_test(const struct shell *shell, size_t argc, char **argv)
 	
         int ret = app_set_stop3_params();
         app_pm_lock_deeper_states(false);
+		debug_pwr_print();
         k_sleep(K_USEC(22000000));
 
 	if (ret) {
@@ -196,6 +212,7 @@ static int cmd_stop3_test(const struct shell *shell, size_t argc, char **argv)
 		return ret;
 	}
 
+	//debug_pwr_print();
 	return ret;
 }
 
@@ -206,6 +223,7 @@ static int cmd_stop4_test(const struct shell *shell, size_t argc, char **argv)
 	
         int ret = app_set_stop4_params();
         app_pm_lock_deeper_states(false);
+		debug_pwr_print();
         k_sleep(K_USEC(22000000));
 
 	if (ret) {
@@ -213,6 +231,7 @@ static int cmd_stop4_test(const struct shell *shell, size_t argc, char **argv)
 		return ret;
 	}
 
+	//debug_pwr_print();
 	return ret;
 }
 
@@ -221,11 +240,9 @@ static int cmd_stop5_test(const struct shell *shell, size_t argc, char **argv)
 	uint32_t regdata1=12, regdata2=1;
 
 	shell_fprintf(shell, SHELL_VT100_COLOR_DEFAULT, "Start STOP 5 mode \n");
-	//backup_ram_write(12);
-	// sys_write32(regdata1, (BK_RAM_BASE + 0x0));
-	// sys_write32(regdata2, (BK_RAM_BASE +0x10));
         int ret = app_set_stop5_params();
         app_pm_lock_deeper_states(false);
+		debug_pwr_print();
         k_sleep(K_USEC(27000000));
 
 
@@ -234,15 +251,16 @@ static int cmd_stop5_test(const struct shell *shell, size_t argc, char **argv)
 		return ret;
 	}
 
+	//debug_pwr_print();
 	return ret;
 }
+
 #endif
 
 
 SHELL_STATIC_SUBCMD_SET_CREATE(
 	sub_cmds, /*SHELL_CMD_ARG(start, NULL, "es0 start", cmd_start, 1, 10),*/
 #if defined(CONFIG_PM)
-        
         #if !defined(CONFIG_START_WITH_HFRC) || !defined(CONFIG_START_WITH_DIVIDED_HFRC)
 	SHELL_CMD_ARG(pm_go1, NULL, "Start GO1-state ", cmd_go1_test, 1,
 		      10),
