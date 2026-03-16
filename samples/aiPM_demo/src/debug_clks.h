@@ -1,0 +1,1 @@
+void DEBUG_frequencies(const struct shell *shell);
