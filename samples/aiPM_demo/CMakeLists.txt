@@ -16,4 +16,6 @@ target_sources(app PRIVATE
     src/main.c
     src/aiPM_modes.c
     src/aiPM_shell.c
+    src/debug_pwr.c
+    src/debug_clks.c
 )
