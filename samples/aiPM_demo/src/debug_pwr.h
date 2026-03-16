@@ -18,6 +18,6 @@
  * This function reads and displays power domain status, retention settings,
  * voltage trim settings, and other power-related hardware registers.
  */
-void debug_pwr_print(void);
+void debug_pwr_print(const struct shell *shell);
 
 #endif /* DEBUG_PWR_H */
