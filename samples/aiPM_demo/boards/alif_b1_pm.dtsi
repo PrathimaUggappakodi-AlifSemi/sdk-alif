@@ -35,7 +35,7 @@
 &subsys_off {
 	min-residency-us = <25000000>;
 	exit-latency-us = <3000>;
-	status = "okay";
+	status = "disabled";
 };
 
 &standby_s2ram {
@@ -47,7 +47,7 @@
 &stop_s2ram {
 	min-residency-us = <21000000>;
 	exit-latency-us = <3000>;
-	status = "disabled";
+	status = "okay";
 };
 
 &timer0{
