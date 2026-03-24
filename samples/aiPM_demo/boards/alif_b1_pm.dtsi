@@ -67,7 +67,7 @@ aliases {
 		zephyr,cortex-m-idle-timer = &rtc0;
 		zephyr,console = &lpuart;
 	        zephyr,shell-uart = &lpuart;
-	        //zephyr,console = &uart2;
+	       // zephyr,console = &uart2;
 	        //zephyr,shell-uart = &uart2;
 	};
 	/*power-states {
