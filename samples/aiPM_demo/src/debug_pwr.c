@@ -105,11 +105,13 @@ void debug_pwr_print(const struct shell *shell) {
 #endif
     reg_data = (*((volatile uint32_t *)0x1A60A030) >> 3) & 63U;
     shell_fprintf(shell, SHELL_VT100_COLOR_DEFAULT, "DCDC_TRIM[8:3]=%u (0x%02X)\r\n", reg_data, reg_data);
+    #if 0
 #if !(defined(CONFIG_ENSEMBLE_GEN2) || defined(CONFIG_SOC_SERIES_E1C))
     reg_data = *((volatile uint32_t *)0x1A60B000);
     shell_fprintf(shell, SHELL_VT100_COLOR_DEFAULT, "MDM_RET=0x%08X\r\n", reg_data);
-    reg_data = *((volatile uint32_t *)0x1A60B008);
+   reg_data = *((volatile uint32_t *)0x1A60B008);
     shell_fprintf(shell, SHELL_VT100_COLOR_DEFAULT, "MDM_CTRL=0x%08X\r\n", reg_data);
+#endif
 #endif
     shell_fprintf(shell, SHELL_VT100_COLOR_DEFAULT, "\n");
 }
