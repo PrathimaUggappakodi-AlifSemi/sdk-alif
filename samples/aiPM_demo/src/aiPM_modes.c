@@ -121,7 +121,7 @@ LOG_MODULE_REGISTER(pm_system_off, LOG_LEVEL_INF);
 	regdata = sys_read32((VBAT_BASE + 0x10));
 	regdata |= 0x1;
 	sys_write32(regdata, (VBAT_BASE + 0x10));
-        
+     
         ret = se_service_set_off_cfg(&offp);
 	__ASSERT(ret == 0, "SE: set_off_cfg failed = %d", ret);
 	
