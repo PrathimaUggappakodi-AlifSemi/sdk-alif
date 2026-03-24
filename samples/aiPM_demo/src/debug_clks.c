@@ -65,10 +65,10 @@ void DEBUG_frequencies(const struct shell *shell) {
     shell_fprintf(shell, SHELL_VT100_COLOR_DEFAULT, "HFRC STANDBY%9dHz%s\r\n", hfrc_top_clock >> hfrc_div_standby, active[hfrc_div_select]);
     shell_fprintf(shell, SHELL_VT100_COLOR_DEFAULT, "[x] means clock is selected\r\n\n");
 
- #if 0   
-    reg_data = *((volatile uint32_t *)0x1A60400C);  // MISC_REG1
+ 
+    reg_data = *((volatile uint32_t *)0x1A604030);  // MISC_REG1
 #if defined(CONFIG_ENSEMBLE_GEN2) || defined(CONFIG_SOC_SERIES_E1C)
-    hfxo_div = (reg_data >> 17) & 15U;
+    hfxo_div = (reg_data >> 17) & 15U; 
 #else
     hfxo_div = (reg_data >> 13) & 15U;
 #endif
@@ -80,7 +80,7 @@ void DEBUG_frequencies(const struct shell *shell) {
                                                     // 2^(0-2 + 0) = 1-4 (76.8M-19.2M)
     }
     hfxo_top_clock >>= hfxo_div;
-#endif 
+      
     reg_data = *((volatile uint32_t *)0x1A60A034);
     shell_fprintf(shell, SHELL_VT100_COLOR_DEFAULT, "LFXO CLK%13dHz%s\r\n", 32768, active[reg_data & 1U]);
     reg_data = *((volatile uint32_t *)0x1A605020);  // XO_REG1
@@ -106,13 +106,9 @@ void DEBUG_frequencies(const struct shell *shell) {
    
     hf_osc_sel = *((volatile uint32_t *)0x1A602004);
     pll_clk_sel = *((volatile uint32_t *)0x1A602008);
-    #if defined(CONFIG_ENSEMBLE_GEN2)
     es_clk_sel = *((volatile uint32_t *)0x1A602010);
-    #else
-    es_clk_sel = *((volatile uint32_t *)0x1A60200C);
-    #endif
     clk_ena = *((volatile uint32_t *)0x1A602014);
-    //bus_clk_div = *((volatile uint32_t *)0x1A604008);
+    bus_clk_div = *((volatile uint32_t *)0x1A604008);
 
 #if defined(CONFIG_SOC_SERIES_E1C)
     pll_boost = ((*(volatile uint32_t *)(0x1A605028)) >> 19) & 1;
@@ -410,5 +406,6 @@ void DEBUG_frequencies(const struct shell *shell) {
     shell_fprintf(shell, SHELL_VT100_COLOR_DEFAULT, "38.4M_CLK%12dHz%s\r\n", 38400000, gated[(clk_ena >> 23) & 1U]);
 #endif
     shell_fprintf(shell, SHELL_VT100_COLOR_DEFAULT, "* means clock is gated\r\n\n");
+
   
 }
