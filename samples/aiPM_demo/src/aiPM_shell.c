@@ -167,6 +167,7 @@ static int cmd_ready2_test(const struct shell *shell, size_t argc, char **argv)
 	debug_pwr_print(shell);
 	return ret;
 }
+
 static int cmd_stop1_test(const struct shell *shell, size_t argc, char **argv)
 {
 
@@ -182,7 +183,6 @@ static int cmd_stop1_test(const struct shell *shell, size_t argc, char **argv)
 		return ret;
 	}
 
-	//debug_pwr_print();
 	return ret;
 }
 
@@ -202,7 +202,6 @@ static int cmd_stop2_test(const struct shell *shell, size_t argc, char **argv)
 		return ret;
 	}
 
-	//debug_pwr_print();
 	return ret;
 }
 
@@ -222,7 +221,6 @@ static int cmd_stop3_test(const struct shell *shell, size_t argc, char **argv)
 		return ret;
 	}
 
-	//debug_pwr_print();
 	return ret;
 }
 
@@ -242,7 +240,6 @@ static int cmd_stop4_test(const struct shell *shell, size_t argc, char **argv)
 		return ret;
 	}
 
-	//debug_pwr_print();
 	return ret;
 }
 
