@@ -180,6 +180,7 @@ For enabling pm_stop modes 1 to 4, set :
 2) Set the following node status as okay in alif_b1_pm.dtsi file
 
 .. code-block:: console
+
    &stop_s2ram {
 	   min-residency-us = <21000000>;
 	   exit-latency-us = <3000>;
@@ -250,7 +251,7 @@ For executing pm_go1, please run
 
 pwr pm_go1
 
-Refer to the UART snapshot below:
+Refer to the UART snapshots below:
 
 .. figure:: ./Media/pm_go1_1.png
 
