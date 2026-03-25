@@ -6,7 +6,7 @@ Alif aiPM Power Modes Demo
 Purpose
 ********
 
-This sample demonstrates exercising certain power profiles and measure the power numbers. This application has a Shell CLI that works on LPUART for. It allows the following commands(power modes) from Shell CLI. All the commands that are available are for PLL based profiles.
+This sample demonstrates exercising certain power profiles and measure the power numbers. This application has a Shell CLI that works on LPUART. It allows the following commands(power modes) from Shell CLI. All the commands that are available are for PLL based profiles.
  
  pm_go1
 
@@ -244,24 +244,17 @@ Currently our Zephyr infrastructure does not support dynamic frequency scaling, 
 Executing the application
 *************************
 
-To execute the power mode, use the command as below:
+To execute the power mode, use the command as below. UART also prints the power and clock register information that is set while calling the services run and off cfg functions. Please refer to the snapshots below.
 
-Example1: For executing standby mode, please run
+For executing pm_go1, please run
 
-pwr pm_standby
+pwr pm_go1
 
-Refer to the snapshot below:
+Refer to the UART snapshot below:
 
-.. figure:: ./Media/Standbyuart.png
+.. figure:: ./Media/pm_go1_1.png
 
-Example2: For executing ready mode with systop off, please run
-
-pwr pm_ready1_with_off_systop
-
-Refer to the snapshot below:
-
-.. figure:: ./Media/Ready1uart.png
-
+.. figure:: ./Media/pm_go1_2.png
 
 Boot Zephyr to lowest power
 ***************************
