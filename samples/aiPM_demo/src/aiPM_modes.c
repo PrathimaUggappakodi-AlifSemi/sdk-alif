@@ -83,16 +83,15 @@ LOG_MODULE_REGISTER(pm_system_off, LOG_LEVEL_INF);
 #define MRAM_LDO_REG 0x1A60A03C
 #define MRAM_LDO_BIT 5
 
+// this definition is used to put the device into S2RAM state - standby and stop(1-4).
 #define S2RAM_SUPPORTED 1
 
+// this definition is used to put the device in SOFT OFF state- stop mode 5.
 #define SOFT_OFF_SUPPORTED 0
 
  #include <zephyr/pm/pm.h>
 
  
- /*
- * This function will be invoked in the PRE_KERNEL_2 phase of the init routine.
- */
  int app_set_stop1_params()
 {
         off_profile_t offp;
@@ -211,6 +210,7 @@ int app_set_standby_params(void)
 	ret = se_service_set_off_cfg(&offp);
 	__ASSERT(ret == 0, "SE: set_off_cfg failed = %d", ret);
 	
+	//Disable MRAM LD0
 	 /*uint32_t reg = sys_read32(MRAM_LDO_REG);
          reg &= ~(1U << MRAM_LDO_BIT);
          sys_write32(reg, MRAM_LDO_REG);*/
@@ -328,6 +328,7 @@ int app_set_go4_params(void)
 
 	return ret;
 }
+// To set go4 mode, uncomment the below function to start Zephyr in HFRC mode to measure power for GO4
 //SYS_INIT(app_set_go4_params, PRE_KERNEL_1, 46);
 
 int app_set_ready2_params(void)
@@ -369,7 +370,7 @@ int app_set_ready2_params(void)
 
 	return ret;
 }
-
+// To set ready2 mode, uncomment the below function to start Zephyr in HFRC mode to measure power for READY2
 //SYS_INIT(app_set_ready2_params, PRE_KERNEL_1, 46);
 
 #else
@@ -399,7 +400,7 @@ int app_set_ready1_systop_on_params(void)
 	ret = se_service_set_run_cfg(&runp);
 	__ASSERT(ret == 0, "SE: set_run_cfg failed = %d", ret);
 	
-	//Set ACLK divider to 3 for ready1 profile with systop on. But this is not dynamically possible in Zephyr for now.
+	//Set ACLK divider to 3 for ready1 profile with systop on. But this is not dynamically possible in Zephyr for now.The function needs to be added here. Refer to the datasheet for more details
 	
 	//Set the SE to sleep
 	se_service_se_sleep_req(0);
@@ -469,8 +470,7 @@ int app_set_go3_params(void)
 	
 	//Set aclk divider here
 	//currently zephyr does not support dynamic scaling of clock
-	//for go3 aclk_div must be set to 3 and se services function should be called
-	
+	//for go3 aclk_div must be set to 3 and se services function should be called. Refer to the datasheet for more details.	
 
 	return ret;
 }
