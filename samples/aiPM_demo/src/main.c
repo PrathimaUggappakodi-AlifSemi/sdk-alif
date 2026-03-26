@@ -25,17 +25,25 @@
 #include <soc.h>
 #include <se_service.h>
 #include <es0_power_manager.h>
+#include <zephyr/shell/shell.h>
+
+#include "debug_pwr.h"
+#include "debug_clks.h"
 
 #include <zephyr/kernel.h>
 #include <zephyr/drivers/gpio.h>
 
 /* 1000 msec = 1 sec */
-#define SLEEP_TIME_MS   100
+//This is used for the LED toggle in the main function. It can be changed as per the requirement. 
+#define SLEEP_TIME_MS   1000
 
 /* The devicetree node identifier for the "led0" alias. */
 #define LED0_NODE DT_ALIAS(led0)
 
 static const struct gpio_dt_spec led = GPIO_DT_SPEC_GET(LED0_NODE, gpios);
+
+//The below function locks the S2RAM and SOFT OFF state to prevent the system from going into these states while executing the other test cases. 
+// This is required since the system cannot wake up from these states without a reset and it will be difficult to debug if the system goes into either of these states while executing the other test cases.
 
 static int app_pre_kernel_init(void)
 {
@@ -46,6 +54,8 @@ static int app_pre_kernel_init(void)
 	return 0;
 }
 SYS_INIT(app_pre_kernel_init, PRE_KERNEL_1, 39);
+
+//Enable CONFIG GPIO to toggle the LED in the main function to ensure Zephyr is running during lowest scaled clk freq setting.
 
 #if defined(CONFIG_GPIO)
 
@@ -72,6 +82,7 @@ int app_set_hfrc_params(void)
 
 	return ret;
 }
+//The below cfg is set while booting Zephyr in the lowest power mode.
 SYS_INIT(app_set_hfrc_params, PRE_KERNEL_1, 46);
 #endif
 
@@ -105,8 +116,8 @@ int main(void)
 		printf("LED state: %s\n", led_state ? "ON" : "OFF");
 		k_msleep(SLEEP_TIME_MS);
 	}
-	
-	#else
+
+    #else
 	printk("PM_SHELL test app boot\n");
 
 	while (1) {
