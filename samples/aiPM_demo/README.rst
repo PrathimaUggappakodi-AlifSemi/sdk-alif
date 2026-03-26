@@ -245,7 +245,7 @@ Currently our Zephyr infrastructure does not support dynamic frequency scaling, 
 Executing the application
 *************************
 
-To execute the power mode, use the command as below. UART also prints the power and clock register information that is set while calling the services run and off cfg functions. Please refer to the snapshots below.
+To execute the power mode, use the command as below. UART also prints the power and clock register information that is set after calling the services run and off cfg functions. Please refer to the snapshots below.
 
 For executing pm_go1, please run
 
