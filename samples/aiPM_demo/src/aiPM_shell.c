@@ -69,7 +69,6 @@ static int cmd_ready1_systop_test(const struct shell *shell, size_t argc, char *
 		return ret;
 	}
 
-	//debug_pwr_print();
 	return ret;
 }
 
@@ -92,7 +91,7 @@ static int cmd_ready1_systop_off_test(const struct shell *shell, size_t argc, ch
 		return ret;
 	}
 
-	//debug_pwr_print();
+
 	return ret;
 }
 
@@ -260,7 +259,6 @@ static int cmd_stop5_test(const struct shell *shell, size_t argc, char **argv)
 		return ret;
 	}
 
-	//debug_pwr_print();
 	return ret;
 }
 
